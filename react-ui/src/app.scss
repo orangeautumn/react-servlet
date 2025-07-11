@@ -1,0 +1,40 @@
+.main-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  //margin-top: 30px;
+  transition: background 0.2s;
+}
+.main-btn:hover {
+  background: #125ea2;
+}
+
+.bom-table-cell {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.bom-table-btn {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+}
+.bom-table-btn.add {
+  color: green;
+  margin-right: 8px;
+}
+.bom-table-btn.remove {
+  color: red;
+}
+
+.bom-table-select {
+  font-size: 16px;
+  font-weight: 400;
+}

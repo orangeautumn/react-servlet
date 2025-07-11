@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import EmployeeReports from "./pages/EmployeeReports";
+import BomUtility from "./pages/BomUtility";
+import "./app.scss";
 
 function getContextPath() {
   const parts = window.location.pathname.split('/');
@@ -13,6 +15,7 @@ const App: React.FC = () => {
     <Router basename={basename}>
       <Routes>
         <Route path="/employeereports" element={<EmployeeReports />} />
+        <Route path="/bomutility" element={<BomUtility />} />
         <Route path="/" element={<Navigate to="/employeereports" replace />} />
       </Routes>
     </Router>
