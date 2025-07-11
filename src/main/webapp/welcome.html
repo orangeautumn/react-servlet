@@ -41,7 +41,9 @@
     <div class="container">
       <h1>Welcome to the Java Web Application</h1>
       <p>This is the welcome page served by Java Servlet.</p>
-      <button onclick="window.location.href='/react-servlets/employeereports'">
+      <button
+        onclick="window.location.href = window.location.origin + window.location.pathname.split('/').slice(0,2).join('/') + '/employeereports'"
+      >
         Go to React Page
       </button>
     </div>

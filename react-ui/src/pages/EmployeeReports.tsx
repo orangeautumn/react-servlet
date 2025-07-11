@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 
+function getContextPath() {
+  const parts = window.location.pathname.split('/');
+  return parts.length > 1 ? '/' + parts[1] : '';
+}
+
 interface EmployeeNode {
   id: string;
   name: string;
@@ -25,13 +30,8 @@ const EmployeeReports: React.FC = () => {
     setLoading(true);
     setError("");
     try {
-      // Try both possible paths for dev and production
-      let response;
-      if (window.location.pathname.startsWith("/react-servlets")) {
-        response = await fetch("/react-servlets/employee-hierarchy.json");
-      } else {
-        response = await fetch("/employee-hierarchy.json");
-      }
+      const contextPath = getContextPath();
+      const response = await fetch(`${contextPath}/employee-hierarchy.json`);
       const data = await response.json();
       if (data && data.id) {
         setHierarchy(data);
@@ -49,7 +49,8 @@ const EmployeeReports: React.FC = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/react-servlets/api");
+      const contextPath = getContextPath();
+      const response = await fetch(`${contextPath}/api`);
       const data = await response.json();
       if (data && data.id) {
         setHierarchy(data);
