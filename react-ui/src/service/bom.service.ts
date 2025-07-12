@@ -1,6 +1,13 @@
+import {
+  BOM_DROPDOWNS_URL,
+  BOM_TABLE_URL,
+  CREATE_REDLINES_URL,
+  CREATE_STRUCTURE_URL,
+} from "./bom-api.constants";
+
 // BOM API service
 export async function fetchBomDropdowns() {
-  const res = await fetch("/api/bom-dropdowns");
+  const res = await fetch(BOM_DROPDOWNS_URL);
   return res.json();
 }
 
@@ -9,7 +16,7 @@ export async function fetchBomTable(
   itemBomTemplateId?: string,
   loadBomId?: string
 ) {
-  let url = "/api/bom-table";
+  let url = BOM_TABLE_URL;
   const params = [];
   if (templateId) params.push(`templateId=${templateId}`);
   if (itemBomTemplateId) params.push(`itemBomTemplate=${itemBomTemplateId}`);
@@ -20,7 +27,7 @@ export async function fetchBomTable(
 }
 
 export async function submitRedlines(tableRows: any) {
-  const res = await fetch("/api/create-redlines", {
+  const res = await fetch(CREATE_REDLINES_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tableRows }),
@@ -29,7 +36,7 @@ export async function submitRedlines(tableRows: any) {
 }
 
 export async function submitStructure(tableRows: any) {
-  const res = await fetch("/api/create-structure", {
+  const res = await fetch(CREATE_STRUCTURE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tableRows }),

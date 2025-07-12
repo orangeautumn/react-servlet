@@ -1,13 +1,13 @@
-import { BomRow } from "../model/model";
+import { BomTemplateItem } from "../model/BomModel";
 
 export const bomMockData: {
   bomTemplates: { id: string; label: string }[];
   itemBomTemplates: { id: string; label: string }[];
   loadBoms: { id: string; label: string }[];
-  tableRows: BomRow[];
-  bomTemplateTables: Record<string, BomRow[]>;
-  itemBomTemplateTables: Record<string, BomRow[]>;
-  loadBomTables: Record<string, BomRow[]>;
+  tableRows: BomTemplateItem[];
+  bomTemplateTables: Record<string, BomTemplateItem[]>;
+  itemBomTemplateTables: Record<string, BomTemplateItem[]>;
+  loadBomTables: Record<string, BomTemplateItem[]>;
 } = {
   bomTemplates: [
     { id: "bom1", label: "Mock BOM Template 1" },

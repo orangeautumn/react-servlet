@@ -1,13 +1,19 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import EmployeeReports from "./pages/EmployeeReports";
-import BomUtility from "./pages/BomUtility";
-import SuccessPage from "./pages/SuccessPage";
+
 import "./app.scss";
+import BomUtility from "./pages/BomUtility.page";
+import SuccessPage from "./pages/SuccessPage.page";
 
 function getContextPath() {
-  const parts = window.location.pathname.split('/');
-  return parts.length > 1 ? '/' + parts[1] : '';
+  const parts = window.location.pathname.split("/");
+  return parts.length > 1 ? "/" + parts[1] : "";
 }
 
 const App: React.FC = () => {
@@ -25,4 +31,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

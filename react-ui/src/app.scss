@@ -9,6 +9,7 @@
   //margin-top: 30px;
   transition: background 0.2s;
 }
+
 .main-btn:hover {
   background: #125ea2;
 }
@@ -37,4 +38,15 @@
 .bom-table-select {
   font-size: 16px;
   font-weight: 400;
+}
+
+
+.bom-table-btn.add {
+  background: none;
+  color: green;
+}
+
+.bom-table-btn.remove {
+  background: none;
+  color: red;
 }

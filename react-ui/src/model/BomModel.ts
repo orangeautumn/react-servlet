@@ -1,4 +1,4 @@
-export interface BomRow {
+export interface BomTemplateItem {
   id: string;
   partType: string;
   numberCreation: string;
