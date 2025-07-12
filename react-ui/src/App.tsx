@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import EmployeeReports from "./pages/EmployeeReports";
 import BomUtility from "./pages/BomUtility";
+import SuccessPage from "./pages/SuccessPage";
 import "./app.scss";
 
 function getContextPath() {
@@ -16,6 +17,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/employeereports" element={<EmployeeReports />} />
         <Route path="/bomutility" element={<BomUtility />} />
+        <Route path="/success" element={<SuccessPage />} />
         <Route path="/" element={<Navigate to="/employeereports" replace />} />
       </Routes>
     </Router>

@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../bmoutility.scss';
+import { fetchBomDropdowns, fetchBomTable, submitRedlines, submitStructure } from '../service/bomService';
+import { bomMockData } from '../mock/bomMockData';
+import { useNavigate } from 'react-router-dom';
 
 interface BomRow {
   id: string;
@@ -14,23 +17,43 @@ interface BomRow {
   level: number;
 }
 
-const initialRows: BomRow[] = [
-  { id: "1", partType: "IC-Finished Good", numberCreation: "$Auto Number", number: "", description: "[Pull from Finished Good Part Number]", quantity: "", dieRank: "", bomDesignator: "", supplier: "", level: 1 },
-  { id: "2", partType: "IC-FT2", numberCreation: "$Auto Number", number: "", description: "", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "3", partType: "IC-FT1 Bin", numberCreation: "$Auto Number", number: "", description: "FT1 Bin", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "4", partType: "IC-FT1", numberCreation: "$Auto Number", number: "", description: "FT1", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "5", partType: "IC-Assembly", numberCreation: "$Auto Number", number: "", description: "Assembly", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "6", partType: "IC-Die", numberCreation: "$Auto Number", number: "", description: "Die", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "7", partType: "IC-Bump Sort", numberCreation: "$Auto Number", number: "", description: "Bump Sort", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "8", partType: "IC-Bumped Wafer", numberCreation: "$Auto Number", number: "", description: "Bump", quantity: "", dieRank: "", bomDesignator: "", supplier: "Sub-AKTW", level: 2 },
-  { id: "9", partType: "IC-Wafer", numberCreation: "$Auto Number", number: "", description: "[Pull from Wafer Part Number]", quantity: "", dieRank: "", bomDesignator: "", supplier: "", level: 1 },
-];
-
 const BomUtility: React.FC = () => {
-  const [rows, setRows] = useState<BomRow[]>(initialRows);
+  const [rows, setRows] = useState<BomRow[]>([]);
   const [bomTemplate, setBomTemplate] = useState("");
   const [itemBomTemplate, setItemBomTemplate] = useState("");
   const [loadBom, setLoadBom] = useState("");
+  const [bomTemplateOptions, setBomTemplateOptions] = useState<{id: string, label: string}[]>([]);
+  const [itemBomTemplateOptions, setItemBomTemplateOptions] = useState<{id: string, label: string}[]>([]);
+  const [loadBomOptions, setLoadBomOptions] = useState<{id: string, label: string}[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.location.href.includes('mock')) {
+      setBomTemplateOptions(bomMockData.bomTemplates);
+      setItemBomTemplateOptions(bomMockData.itemBomTemplates);
+      setLoadBomOptions(bomMockData.loadBoms);
+      setRows(bomMockData.tableRows);
+    } else {
+      fetchBomDropdowns()
+        .then(data => {
+          setBomTemplateOptions(data.bomTemplates || []);
+          setItemBomTemplateOptions(data.itemBomTemplates || []);
+          setLoadBomOptions(data.loadBoms || []);
+        })
+        .catch(() => {
+          setBomTemplateOptions([]);
+          setItemBomTemplateOptions([]);
+          setLoadBomOptions([]);
+        });
+      fetchBomTable()
+        .then(data => {
+          setRows(Array.isArray(data) ? data : []);
+        })
+        .catch(() => {
+          setRows([]);
+        });
+    }
+  }, []);
 
   const handleAddRow = (index: number) => {
     const parent = rows[index];
@@ -69,6 +92,80 @@ const BomUtility: React.FC = () => {
     }
   };
 
+  const handleSubmit = async (type: 'redlines' | 'structure') => {
+    let response;
+    if (window.location.href.includes('mock')) {
+      // Simulate mock API response
+      response = { success: true, refNumber: 'MOCK-' + Math.floor(Math.random() * 100000) };
+    } else {
+      if (type === 'redlines') {
+        response = await submitRedlines(rows);
+      } else {
+        response = await submitStructure(rows);
+      }
+    }
+    if (response && response.success) {
+      navigate('/success', {
+        state: {
+          message: type === 'redlines' ? 'Redlines created successfully!' : 'Structure created successfully!',
+          refNumber: response.refNumber
+        }
+      });
+    }
+  };
+
+  // Dropdown change handlers (only update value)
+  const handleBomTemplateSelect = (templateId: string) => {
+    setBomTemplate(templateId);
+  };
+  const handleItemBomTemplateSelect = (templateId: string) => {
+    setItemBomTemplate(templateId);
+  };
+  const handleLoadBomSelect = (loadBomId: string) => {
+    setLoadBom(loadBomId);
+  };
+
+  // Load button handlers (call API/mock)
+  const handleBomTemplateLoad = async () => {
+    if (!bomTemplate) return;
+    if (window.location.href.includes('mock')) {
+      setRows(bomMockData.bomTemplateTables[bomTemplate] || []);
+    } else {
+      try {
+        const data = await fetchBomTable(bomTemplate);
+        setRows(Array.isArray(data) ? data : []);
+      } catch {
+        setRows([]);
+      }
+    }
+  };
+  const handleItemBomTemplateLoad = async () => {
+    if (!itemBomTemplate) return;
+    if (window.location.href.includes('mock')) {
+      setRows(bomMockData.itemBomTemplateTables[itemBomTemplate] || []);
+    } else {
+      try {
+        const data = await fetchBomTable(undefined, itemBomTemplate);
+        setRows(Array.isArray(data) ? data : []);
+      } catch {
+        setRows([]);
+      }
+    }
+  };
+  const handleLoadBomLoad = async () => {
+    if (!loadBom) return;
+    if (window.location.href.includes('mock')) {
+      setRows(bomMockData.loadBomTables[loadBom] || []);
+    } else {
+      try {
+        const data = await fetchBomTable(undefined, undefined, loadBom);
+        setRows(Array.isArray(data) ? data : []);
+      } catch {
+        setRows([]);
+      }
+    }
+  };
+
   return (
     <div className="bom-utility-container">
       <h2 className="bom-utility-title">BOM Utility</h2>
@@ -76,18 +173,45 @@ const BomUtility: React.FC = () => {
         <div className="bom-form-row">
           {/* BOM Template */}
           <label className="bom-form-label">BOM Template</label>
-          <input className="bom-form-input" value={bomTemplate} onChange={e => setBomTemplate(e.target.value)} />
-          <button className="main-btn bom-main-btn">Load</button>
+          <select
+            className="bom-form-input"
+            value={bomTemplate}
+            onChange={e => handleBomTemplateSelect(e.target.value)}
+          >
+            <option value="">Select BOM Template</option>
+            {bomTemplateOptions.map(opt => (
+              <option key={opt.id} value={opt.id}>{opt.label}</option>
+            ))}
+          </select>
+          <button className="main-btn bom-main-btn" onClick={handleBomTemplateLoad}>Load</button>
 
           {/* Item BOM Template */}
           <label className="bom-form-label">Item BOM Template</label>
-          <input className="bom-form-input" value={itemBomTemplate} onChange={e => setItemBomTemplate(e.target.value)} />
-          <button className="main-btn bom-main-btn">Load</button>
+          <select
+            className="bom-form-input"
+            value={itemBomTemplate}
+            onChange={e => handleItemBomTemplateSelect(e.target.value)}
+          >
+            <option value="">Select Item BOM Template</option>
+            {itemBomTemplateOptions.map(opt => (
+              <option key={opt.id} value={opt.id}>{opt.label}</option>
+            ))}
+          </select>
+          <button className="main-btn bom-main-btn" onClick={handleItemBomTemplateLoad}>Load</button>
 
           {/* Load BOM in the same column as other buttons */}
           <label className="bom-form-label">Load BOM</label>
-          <input className="bom-form-input" value={loadBom} onChange={e => setLoadBom(e.target.value)} />
-          <button className="main-btn bom-main-btn">Load</button>
+          <select
+            className="bom-form-input"
+            value={loadBom}
+            onChange={e => handleLoadBomSelect(e.target.value)}
+          >
+            <option value="">Select Load BOM</option>
+            {loadBomOptions.map(opt => (
+              <option key={opt.id} value={opt.id}>{opt.label}</option>
+            ))}
+          </select>
+          <button className="main-btn bom-main-btn" onClick={handleLoadBomLoad}>Load</button>
         </div>
       </div>
       <div className="bom-preview-container" style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
@@ -144,8 +268,8 @@ const BomUtility: React.FC = () => {
         </tbody>
       </table>
       <div className="bom-bottom-btn-row">
-        <button className="main-btn">Create Redlines</button>
-        <button className="main-btn">Create Structure</button>
+        <button className="main-btn" onClick={() => handleSubmit('redlines')}>Create Redlines</button>
+        <button className="main-btn" onClick={() => handleSubmit('structure')}>Create Structure</button>
       </div>
     </div>
   );
