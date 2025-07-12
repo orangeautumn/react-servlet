@@ -42,9 +42,15 @@
       <h1>Welcome to the Java Web Application</h1>
       <p>This is the welcome page served by Java Servlet.</p>
       <button
-        onclick="window.location.href = window.location.origin + window.location.pathname.split('/').slice(0,2).join('/') + '/bom-utility'"
+        onclick="window.location.href = window.location.origin + window.location.pathname.split('/').slice(0,2).join('/') + '/bomutility?mock'"
       >
-        Go to Bom Utitlity UI
+        Go to Bom Utitlity UI Mock
+      </button>
+
+      <button
+        onclick="window.location.href = window.location.origin + window.location.pathname.split('/').slice(0,2).join('/') + '/bomutility'"
+      >
+        Go to Bom Utitlity UI API
       </button>
     </div>
   </body>
