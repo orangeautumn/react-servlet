@@ -20,6 +20,15 @@
         <url-pattern>/employeereports</url-pattern>
         <url-pattern>/employeereports/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>BOMUtilityUIServlet</servlet-name>
+        <servlet-class>com.example.BOMUtilityUIServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BOMUtilityUIServlet</servlet-name>
+        <url-pattern>/bomutility</url-pattern>
+        <url-pattern>/bomutility/*</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>welcome.html</welcome-file>
     </welcome-file-list>
