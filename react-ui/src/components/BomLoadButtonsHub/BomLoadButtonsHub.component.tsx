@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { bomMockData } from "../../mock/bomMockData";
 import { fetchBomDropdowns } from "../../service/bom.service";
 import BomLoadButton from "../BomLoadButton/BomLoadButton.component";
+import type { DropdownOption } from "../../model/BomModel";
 
 interface BomLoadButtonsHubProps {
   setRows: (rows: any[]) => void;
@@ -12,14 +13,12 @@ const BomLoadButtonsHub: React.FC<BomLoadButtonsHubProps> = ({ setRows }) => {
   const [itemBomTemplate, setItemBomTemplate] = useState("");
   const [loadBom, setLoadBom] = useState("");
   const [bomTemplateOptions, setBomTemplateOptions] = useState<
-    { id: string; label: string }[]
+    DropdownOption[]
   >([]);
   const [itemBomTemplateOptions, setItemBomTemplateOptions] = useState<
-    { id: string; label: string }[]
+    DropdownOption[]
   >([]);
-  const [loadBomOptions, setLoadBomOptions] = useState<
-    { id: string; label: string }[]
-  >([]);
+  const [loadBomOptions, setLoadBomOptions] = useState<DropdownOption[]>([]);
 
   useEffect(() => {
     if (window.location.href.includes("mock")) {

@@ -10,3 +10,11 @@ export interface BomTemplateItem {
   supplier: string;
   level: number;
 }
+
+export interface DropdownOption {
+  id: string;
+  label: string;
+  Foundary?: string;
+  FoudaryLocation?: string;
+  Technology?: string;
+}

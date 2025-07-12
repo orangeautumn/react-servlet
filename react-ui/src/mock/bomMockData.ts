@@ -1,25 +1,61 @@
-import { BomTemplateItem } from "../model/BomModel";
+import { BomTemplateItem, DropdownOption } from "../model/BomModel";
 
 export const bomMockData: {
-  bomTemplates: { id: string; label: string }[];
-  itemBomTemplates: { id: string; label: string }[];
-  loadBoms: { id: string; label: string }[];
+  bomTemplates: DropdownOption[];
+  itemBomTemplates: DropdownOption[];
+  loadBoms: DropdownOption[];
   tableRows: BomTemplateItem[];
   bomTemplateTables: Record<string, BomTemplateItem[]>;
   itemBomTemplateTables: Record<string, BomTemplateItem[]>;
   loadBomTables: Record<string, BomTemplateItem[]>;
 } = {
   bomTemplates: [
-    { id: "bom1", label: "Mock BOM Template 1" },
-    { id: "bom2", label: "Mock BOM Template 2" },
+    {
+      id: "bom1",
+      label: "Mock BOM Template 1",
+      Foundary: "Foundary1",
+      FoudaryLocation: "Location1",
+      Technology: "Tech1",
+    },
+    {
+      id: "bom2",
+      label: "Mock BOM Template 2",
+      Foundary: "Foundary2",
+      FoudaryLocation: "Location2",
+      Technology: "Tech2",
+    },
   ],
   itemBomTemplates: [
-    { id: "item1", label: "Mock Item BOM Template 1" },
-    { id: "item2", label: "Mock Item BOM Template 2" },
+    {
+      id: "item1",
+      label: "Mock Item BOM Template 1",
+      Foundary: "Foundary3",
+      FoudaryLocation: "Location3",
+      Technology: "Tech3",
+    },
+    {
+      id: "item2",
+      label: "Mock Item BOM Template 2",
+      Foundary: "Foundary4",
+      FoudaryLocation: "Location4",
+      Technology: "Tech4",
+    },
   ],
   loadBoms: [
-    { id: "load1", label: "Mock Load BOM 1" },
-    { id: "load2", label: "Mock Load BOM 2" },
+    {
+      id: "load1",
+      label: "Mock Load BOM 1",
+      Foundary: "Foundary5",
+      FoudaryLocation: "Location5",
+      Technology: "Tech5",
+    },
+    {
+      id: "load2",
+      label: "Mock Load BOM 2",
+      Foundary: "Foundary6",
+      FoudaryLocation: "Location6",
+      Technology: "Tech6",
+    },
   ],
   tableRows: [
     {
